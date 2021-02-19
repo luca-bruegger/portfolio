@@ -1,0 +1,166 @@
+html {
+    padding: env(safe-area-inset);
+    background: #bdc3c7;
+    background: -webkit-linear-gradient(to right, #2c3e50, #bdc3c7);
+    background: linear-gradient(to right, #2c3e50, #bdc3c7);
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    padding: 10px;
+}
+
+.card {
+    max-width: 450px;
+    max-height: 260px;
+
+    width: 90%;
+    height: 100%;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background-color: #1c1c1e;
+    border-radius: 0.75rem;
+    box-shadow: 0 22px 70px 4px rgba(0, 0, 0, 0.56), 0 0 0 1px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+
+.card-avatar {
+    overflow: hidden;
+    max-width: 25%;
+    width: 25%;
+}
+
+.karla {
+    font-family: 'Karla', sans-serif;
+}
+
+.rubik {
+    font-family: 'Rubik', sans-serif;
+}
+
+.header {
+    color: #FFFFFF;
+    font-size: 1.3rem;
+}
+
+p {
+    color: #FFFFFF;
+}
+
+.instagram {
+    background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+    box-shadow: 0 4px 30px rgba(120, 64, 190, 0.6);
+}
+
+.github {
+    background: linear-gradient(45deg, #333333, #626b73);
+    box-shadow: 0 4px 30px rgba(63, 65, 67, 0.6);
+}
+
+.mail {
+    background: linear-gradient(45deg, #d5135a, #f05924);
+    box-shadow: 0 4px 30px rgba(223, 45, 70, 0.6);
+}
+
+.profile-card-social-item {
+    display: inline-flex;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-size: 21px;
+    color: #FFFFFF;
+    flex-shrink: 0;
+    transition: all 0.3s;
+}
+
+.quit-button {
+    background: linear-gradient(45deg, #2d2d2d, #bebebe);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);    display: inline-flex;
+    width: 95px;
+    height: 45px;
+    border-radius: 15px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-size: 21px;
+    color: #FFFFFF;
+    transition: all 0.3s;
+}
+
+@media (max-width: 420px) {
+    .card-details {
+        height: 80%;
+        max-width: 75%;
+        margin: auto;
+    }
+
+    .card-buttons {
+        display: flex;
+        justify-content: space-between;
+        padding-right: 10px;
+    }
+
+    .imprint {
+        width: 90%;
+        margin: auto;
+    }
+
+    .card-avatar-image {
+        width: 200px;
+        transform: translate(-25%, 10%);
+    }
+}
+
+@media (min-width: 421px) {
+    .card-details {
+        padding: 20px;
+        height: 80%;
+        max-width: 350px;
+        margin: auto;
+    }
+
+    .card-buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .imprint {
+        width: 60%;
+        margin: auto;
+    }
+
+    .card-avatar-image {
+        width: 250px;
+        transform: translate(-22%);
+    }
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+a, a:hover, a:focus, a:active {
+    text-decoration: none;
+    color: inherit;
+}
+
+h1 {
+    color: #FFFFFF;
+}
