@@ -1,8 +1,13 @@
 html {
     padding: env(safe-area-inset);
-    background: #bdc3c7;
-    background: -webkit-linear-gradient(to right, #2c3e50, #bdc3c7);
-    background: linear-gradient(to right, #2c3e50, #bdc3c7);
+    background-image: linear-gradient(-225deg, #B7F8DB 0%, #50A7C2 100%);
+    background-image: -webkit-linear-gradient(-225deg, #B7F8DB 0%, #50A7C2 100%);
+
+
+    /*Christmas Gradient*/
+    /*background: #bdc3c7;*/
+    /*background: -webkit-linear-gradient(to right, #2c3e50, #bdc3c7);*/
+    /*background: linear-gradient(to right, #2c3e50, #bdc3c7);*/
 }
 
 html, body {
