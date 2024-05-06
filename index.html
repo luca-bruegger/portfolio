@@ -22,16 +22,16 @@
     </div>
     <div class="card-details">
         <header class="rubik header">Luca Brügger</header>
-        <p class="karla">Apprentice in Software Development.</p>
+        <p class="karla">Software Developer.</p>
         <p class="karla">SpaceX, Tesla and generally Elon Musk Fan.</p>
         <div class="card-buttons">
-            <a href="https://www.github.com/LBruegger" class="profile-card-social-item github" target="_blank">
+            <a href="https://www.github.com/luca-bruegger" class="profile-card-social-item github" target="_blank">
                 <ion-icon name="logo-github"></ion-icon>
             </a>
             <a href="mailto:hello@lucabruegger.ch" class="profile-card-social-item mail" target="_blank">
                 <ion-icon name="mail-outline"></ion-icon>
             </a>
-            <a href="https://www.instagram.com/luca_bruegger" class="profile-card-social-item instagram"
+            <a href="https://www.instagram.com/lucabruegger1" class="profile-card-social-item instagram"
                target="_blank">
                 <ion-icon name="logo-instagram"></ion-icon>
             </a>
@@ -40,10 +40,12 @@
 </div>
 
 <footer class="karla footer">
-    ©2021 Luca Brügger | <a href="/imprint.html" class="rubik">Imprint</a>
+    <span id="copyright"></span> | <a href="/imprint.html" class="rubik">Imprint</a>
+    ©2021 Luca Brügger
 </footer>
 
 <!--<script src="js/snow.js"></script>-->
 <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+<script>document.getElementById('copyright').innerHTML = `©2018-${(new Date).getFullYear()} Luca Brügger`</script>
 </body>
 </html>
