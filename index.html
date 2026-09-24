@@ -1,50 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="de">
 <head>
     <meta charset="utf-8">
-    <title>Hello!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#050505">
     <meta name="author" content="Luca Brügger">
-    <meta name="description" content="Portfolio">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Karla:wght@300&display=swap" rel="stylesheet">
+    <meta name="description" content="Luca Brügger – Software Developer. Web, Mobile und mehr.">
+    <link rel="canonical" href="https://lucabruegger.ch/">
+    <title>Luca Brügger</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 </head>
-
 <body>
-
-<div class="card">
-    <div class="card-avatar">
-        <img src="images/me.png" alt="avatar-image" class="card-avatar-image">
+    <div id="bg" aria-hidden="true">
+        <div class="orb orb-a"></div>
+        <div class="orb orb-b"></div>
+        <div class="orb orb-c"></div>
+        <canvas id="net"></canvas>
     </div>
-    <div class="card-details">
-        <header class="rubik header">Luca Brügger</header>
-        <p class="karla">Software Developer.</p>
-        <p class="karla">Website, Mobile-App, anything else...</p>
-        <div class="card-buttons">
-            <a href="https://www.github.com/luca-bruegger" class="profile-card-social-item github" target="_blank">
-                <ion-icon name="logo-github"></ion-icon>
-            </a>
-            <a href="mailto:hello@lucabruegger.ch" class="profile-card-social-item mail" target="_blank">
-                <ion-icon name="mail-outline"></ion-icon>
-            </a>
-            <a href="https://www.instagram.com/lucabruegger1" class="profile-card-social-item instagram"
-               target="_blank">
-                <ion-icon name="logo-instagram"></ion-icon>
-            </a>
-        </div>
-    </div>
-</div>
 
-<footer class="karla footer">
-    <span id="copyright"></span> | <a href="/imprint.html" class="rubik">Imprint</a>
-</footer>
+    <main class="page">
+        <section class="card">
+            <img class="avatar" src="images/me.png" alt="Luca Brügger">
+            <p class="eyebrow">Software Developer</p>
+            <h1>Luca Brügger</h1>
+            <p class="lede">Web, Mobile und alles dazwischen. SpaceX, Tesla — und generell Elon-Musk-Fan.</p>
+            <div class="actions">
+                <a class="social" href="https://www.github.com/luca-bruegger" target="_blank" rel="noopener noreferrer" aria-label="GitHub">GitHub</a>
+                <a class="social" href="mailto:hello@lucabruegger.ch" aria-label="E-Mail">Mail</a>
+                <a class="social" href="https://www.instagram.com/lucabruegger1" target="_blank" rel="noopener noreferrer" aria-label="Instagram">Instagram</a>
+            </div>
+            <a class="project-link" href="https://www.b-projects.ch" target="_blank" rel="noopener noreferrer">Projekte auf b-projects.ch →</a>
+        </section>
+    </main>
 
-<!--<script src="js/snow.js"></script>-->
-<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
-<script>document.getElementById('copyright').innerHTML = `©2018-${(new Date).getFullYear()} Luca Brügger`</script>
+    <footer>
+        <p><span id="copyright">&copy; 2018–2026 Luca Brügger</span> · <a href="imprint.html">Imprint</a></p>
+    </footer>
+
+    <script src="js/bg.js"></script>
+    <script>
+        document.getElementById("copyright").textContent =
+            "\u00a9 2018\u2013" + new Date().getFullYear() + " Luca Br\u00fcgger";
+    </script>
 </body>
 </html>
