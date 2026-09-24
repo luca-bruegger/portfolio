@@ -15,8 +15,7 @@
 </head>
 <body>
     <div id="bg" aria-hidden="true">
-        <video id="bg-a" class="bgvid is-on" muted playsinline poster="images/me_old.png"></video>
-        <video id="bg-b" class="bgvid" muted playsinline></video>
+        <video id="bgvid" class="bgvid is-on" autoplay muted loop playsinline poster="images/me_old.png"></video>
         <div class="wash"></div>
         <div class="grain"></div>
     </div>
@@ -51,32 +50,9 @@
             if (hour >= 5 && hour < 10) file = "images/bg-morning.mp4";
             else if (hour >= 10 && hour < 17) file = "images/bg-day.mp4";
             else if (hour >= 17 && hour < 21) file = "images/bg-evening.mp4";
-            var a = document.getElementById("bg-a");
-            var b = document.getElementById("bg-b");
-            var active = a;
-            var idle = b;
-            var swapping = false;
-            [a, b].forEach(function (v) { v.src = file; });
-            a.play().catch(function () {});
-            function handoff() {
-                if (swapping || !active.duration || !isFinite(active.duration)) return;
-                if (active.currentTime < active.duration - 0.75) return;
-                swapping = true;
-                idle.currentTime = 0;
-                var play = idle.play();
-                if (play && play.catch) play.catch(function () {});
-                idle.classList.add("is-on");
-                active.classList.remove("is-on");
-                var done = active;
-                active = idle;
-                idle = done;
-                setTimeout(function () {
-                    idle.pause();
-                    swapping = false;
-                }, 900);
-            }
-            a.addEventListener("timeupdate", function () { if (active === a) handoff(); });
-            b.addEventListener("timeupdate", function () { if (active === b) handoff(); });
+            var video = document.getElementById("bgvid");
+            video.src = file;
+            video.play().catch(function () {});
         })();
     </script>
 
