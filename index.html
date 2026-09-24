@@ -15,9 +15,7 @@
 </head>
 <body>
     <div id="bg" aria-hidden="true">
-        <video class="bgvid" autoplay muted loop playsinline poster="images/me_old.png">
-            <source src="images/bg.mp4" type="video/mp4">
-        </video>
+        <video id="bgvid" class="bgvid" autoplay muted loop playsinline poster="images/me_old.png"></video>
         <div class="wash"></div>
         <div class="grain"></div>
     </div>
@@ -41,6 +39,22 @@
     <footer>
         <p><span id="copyright">&copy; 2018–2026 Luca Brügger</span> · <a href="imprint.html">Imprint</a> · <a href="https://www.b-projects.ch" target="_blank" rel="noopener noreferrer">b-projects</a></p>
     </footer>
+
+    
+    <script>
+        (function () {
+            var hour = Number(new Intl.DateTimeFormat("de-CH", {
+                hour: "numeric", hourCycle: "h23", timeZone: "Europe/Zurich"
+            }).format(new Date()));
+            var file = "images/bg-night.mp4";
+            if (hour >= 5 && hour < 10) file = "images/bg-morning.mp4";
+            else if (hour >= 10 && hour < 17) file = "images/bg-day.mp4";
+            else if (hour >= 17 && hour < 21) file = "images/bg-evening.mp4";
+            var video = document.getElementById("bgvid");
+            video.src = file;
+            video.play().catch(function () {});
+        })();
+    </script>
 
     <script src="js/bg.js"></script>
     <script>
