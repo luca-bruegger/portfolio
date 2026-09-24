@@ -54,6 +54,12 @@ body {
     height: 100%;
     object-fit: cover;
     filter: saturate(0.85) contrast(1.05);
+    opacity: 0;
+    transition: opacity 0.8s linear;
+}
+.bgvid.is-on { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+    .bgvid { transition: none; }
 }
 .wash {
     background:
