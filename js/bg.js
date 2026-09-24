@@ -4,247 +4,173 @@
     var ctx = canvas.getContext("2d");
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var w = 0, h = 0, dpr = 1;
+    var plates = [
+        { name: "morning", from: 5, to: 10, src: "images/morning.jpg", water: [{ x: 0, y: 0.50, w: 0.62, h: 0.48 }] },
+        { name: "day", from: 10, to: 17, src: "images/day.jpg", water: [{ x: 0.55, y: 0.46, w: 0.45, h: 0.50 }, { x: 0, y: 0.40, w: 1, h: 0.10 }] },
+        { name: "evening", from: 17, to: 21, src: "images/evening.jpg", water: [{ x: 0.42, y: 0.50, w: 0.58, h: 0.46 }] },
+        { name: "night", from: 21, to: 29, src: "images/night.jpg", water: [{ x: 0, y: 0.58, w: 1, h: 0.12 }, { x: 0.62, y: 0.70, w: 0.38, h: 0.28 }] }
+    ];
+    var birds = [
+        { s: 0.035, y: 0.12, p: 0.4, scale: 0.7 },
+        { s: 0.022, y: 0.18, p: 1.7, scale: 1 },
+        { s: 0.028, y: 0.22, p: 2.8, scale: 0.55 },
+        { s: 0.018, y: 0.09, p: 4.1, scale: 0.85 }
+    ];
+    var buffers = {};
+    var ready = {};
 
-    function zurichHour() {
+    function hourNow() {
         var parts = new Intl.DateTimeFormat("en-GB", {
-            timeZone: "Europe/Zurich",
-            hour: "numeric",
-            minute: "numeric",
-            hourCycle: "h23"
+            timeZone: "Europe/Zurich", hour: "numeric", minute: "numeric", hourCycle: "h23"
         }).formatToParts(new Date());
         var hour = 0, minute = 0;
-        parts.forEach(function (p) {
-            if (p.type === "hour") hour = Number(p.value);
-            if (p.type === "minute") minute = Number(p.value);
+        parts.forEach(function (part) {
+            if (part.type === "hour") hour = Number(part.value);
+            if (part.type === "minute") minute = Number(part.value);
         });
         return hour + minute / 60;
     }
 
-    function mix(a, b, t) {
-        return a + (b - a) * t;
-    }
-    function hex(r, g, b) {
-        return "rgb(" + (r | 0) + "," + (g | 0) + "," + (b | 0) + ")";
-    }
-    function lerpColor(a, b, t) {
-        return [
-            mix(a[0], b[0], t),
-            mix(a[1], b[1], t),
-            mix(a[2], b[2], t)
-        ];
+    function plateFor(hour) {
+        var h = hour >= 21 || hour < 5 ? hour + (hour < 5 ? 24 : 0) : hour;
+        for (var i = 0; i < plates.length; i++) {
+            if (h >= plates[i].from && h < plates[i].to) return plates[i];
+        }
+        return plates[1];
     }
 
-    var stops = [
-        { h: 0, sky: [8, 12, 28], horizon: [28, 42, 74], water: [10, 22, 40], land: [16, 22, 34] },
-        { h: 5, sky: [92, 118, 158], horizon: [242, 196, 164], water: [92, 124, 150], land: [78, 96, 118] },
-        { h: 10, sky: [110, 176, 214], horizon: [214, 232, 242], water: [58, 132, 176], land: [96, 122, 138] },
-        { h: 17, sky: [48, 72, 118], horizon: [228, 150, 96], water: [92, 86, 104], land: [58, 66, 84] },
-        { h: 21, sky: [8, 12, 28], horizon: [28, 42, 74], water: [10, 22, 40], land: [16, 22, 34] },
-        { h: 24, sky: [8, 12, 28], horizon: [28, 42, 74], water: [10, 22, 40], land: [16, 22, 34] }
-    ];
-
-    function palette(hour) {
-        var i = 0;
-        while (i < stops.length - 1 && hour >= stops[i + 1].h) i++;
-        var a = stops[i], b = stops[Math.min(i + 1, stops.length - 1)];
-        var t = (hour - a.h) / (b.h - a.h || 1);
-        return {
-            sky: lerpColor(a.sky, b.sky, t),
-            horizon: lerpColor(a.horizon, b.horizon, t),
-            water: lerpColor(a.water, b.water, t),
-            land: lerpColor(a.land, b.land, t),
-            night: hour < 5 || hour >= 21
-        };
-    }
-
-    var birds = [
-        { s: 0.018, y: 0.18, p: 0.2, a: 18 },
-        { s: 0.012, y: 0.24, p: 1.4, a: 12 },
-        { s: 0.022, y: 0.14, p: 2.2, a: 16 },
-        { s: 0.015, y: 0.30, p: 3.1, a: 10 }
-    ];
+    plates.forEach(function (plate) {
+        var img = new Image();
+        img.onload = function () { ready[plate.name] = img; };
+        img.src = plate.src;
+    });
 
     function resize() {
         dpr = Math.min(window.devicePixelRatio || 1, 2);
         w = window.innerWidth;
         h = window.innerHeight;
-        canvas.width = w * dpr;
-        canvas.height = h * dpr;
+        canvas.width = Math.max(1, w * dpr);
+        canvas.height = Math.max(1, h * dpr);
         canvas.style.width = w + "px";
         canvas.style.height = h + "px";
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        buffers = {};
     }
 
-    function mountain(color, peaks, base) {
-        ctx.beginPath();
-        ctx.moveTo(0, h * base);
-        peaks.forEach(function (pk) { ctx.lineTo(w * pk[0], h * pk[1]); });
-        ctx.lineTo(w, h * base);
-        ctx.closePath();
-        ctx.fillStyle = color;
-        ctx.fill();
+    function cover(img) {
+        var key = img.src + ":" + w + "x" + h;
+        if (buffers[key]) return buffers[key];
+        var buffer = document.createElement("canvas");
+        buffer.width = w;
+        buffer.height = h;
+        var bctx = buffer.getContext("2d");
+        var ir = img.width / img.height;
+        var cr = w / h;
+        var dw = w, dh = h, dx = 0, dy = 0;
+        if (ir > cr) {
+            dh = h;
+            dw = h * ir;
+            dx = (w - dw) / 2;
+        } else {
+            dw = w;
+            dh = w / ir;
+            dy = (h - dh) / 2;
+        }
+        bctx.drawImage(img, dx, dy, dw, dh);
+        buffers[key] = buffer;
+        return buffer;
     }
 
-    function bird(x, y, flap) {
-        ctx.beginPath();
-        ctx.moveTo(x - 10, y);
-        ctx.quadraticCurveTo(x - 4, y - 6 * flap, x, y);
-        ctx.quadraticCurveTo(x + 4, y - 6 * flap, x + 10, y);
-        ctx.stroke();
-    }
-
-    function person(x, y, t) {
-        var breath = Math.sin(t * 1.3) * 1.4;
+    function bird(x, y, flap, scale) {
         ctx.save();
-        ctx.translate(x, y + breath);
-        ctx.fillStyle = "#6b4a32";
-        roundRect(-46, 18, 14, 46, 3);
-        roundRect(34, 18, 14, 46, 3);
-        ctx.fillStyle = "#8d6244";
-        roundRect(-78, 36, 156, 12, 3);
-        ctx.fillStyle = "#c4a882";
-        roundRect(-34, 8, 70, 46, 10);
-        ctx.fillStyle = "#f0c9a0";
+        ctx.translate(x, y);
+        ctx.scale(scale, scale);
         ctx.beginPath();
-        ctx.arc(2, -18, 22, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = "#6b4428";
-        ctx.beginPath();
-        ctx.arc(2, -24, 22, Math.PI, 0);
-        ctx.fill();
-        var blink = Math.sin(t * 0.7) > 0.97 ? 0.2 : 1;
-        ctx.fillStyle = "#3a2a22";
-        ctx.beginPath();
-        ctx.ellipse(-7, -18, 2.1, 2.4 * blink, 0, 0, Math.PI * 2);
-        ctx.ellipse(8, -18, 2.1, 2.4 * blink, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = "#a87858";
-        ctx.lineWidth = 1.4;
-        ctx.beginPath();
-        ctx.arc(1, -12, 5, 0.2, Math.PI - 0.2);
-        ctx.stroke();
-        ctx.fillStyle = "#d7dde3";
-        ctx.beginPath();
-        ctx.moveTo(28, 18);
-        ctx.lineTo(78, -8);
-        ctx.lineTo(86, 8);
-        ctx.lineTo(36, 30);
-        ctx.closePath();
-        ctx.fill();
-        ctx.fillStyle = "#b7c0c8";
-        roundRect(24, 28, 58, 8, 2);
-        ctx.fillStyle = "#f4f1ea";
-        ctx.beginPath();
-        ctx.ellipse(-40, 24, 8, 6, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = "rgba(255,255,255,0.55)";
-        ctx.lineWidth = 1.2;
-        var steam = (t * 18) % 26;
-        ctx.beginPath();
-        ctx.moveTo(-40, 16 - steam);
-        ctx.quadraticCurveTo(-34, 8 - steam, -40, 0 - steam);
+        ctx.moveTo(-14, 0);
+        ctx.quadraticCurveTo(-7, -8 * flap, 0, 0);
+        ctx.quadraticCurveTo(7, -8 * flap, 14, 0);
         ctx.stroke();
         ctx.restore();
     }
 
-    function roundRect(x, y, rw, rh, r) {
+    function starship(x, y, t, night) {
+        ctx.save();
+        ctx.translate(x, y);
+        var body = ctx.createLinearGradient(-8, 0, 8, 0);
+        body.addColorStop(0, "#b7bec6");
+        body.addColorStop(0.45, "#f4f7fa");
+        body.addColorStop(1, "#8e979f");
+        ctx.fillStyle = body;
         ctx.beginPath();
-        ctx.moveTo(x + r, y);
-        ctx.arcTo(x + rw, y, x + rw, y + rh, r);
-        ctx.arcTo(x + rw, y + rh, x, y + rh, r);
-        ctx.arcTo(x, y + rh, x, y, r);
-        ctx.arcTo(x, y, x + rw, y, r);
+        ctx.moveTo(0, -34);
+        ctx.lineTo(7, -8);
+        ctx.lineTo(7, 16);
+        ctx.lineTo(-7, 16);
+        ctx.lineTo(-7, -8);
         ctx.closePath();
         ctx.fill();
+        ctx.fillStyle = "#d5dbe1";
+        ctx.beginPath();
+        ctx.moveTo(-11, 4);
+        ctx.lineTo(-7, -2);
+        ctx.lineTo(-7, 12);
+        ctx.closePath();
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(11, 4);
+        ctx.lineTo(7, -2);
+        ctx.lineTo(7, 12);
+        ctx.closePath();
+        ctx.fill();
+        var glow = 0.35 + 0.25 * Math.sin(t * 11);
+        var flame = ctx.createLinearGradient(0, 16, 0, 36);
+        flame.addColorStop(0, night ? "rgba(255,186,120," + (glow + 0.3) + ")" : "rgba(255,214,170," + glow + ")");
+        flame.addColorStop(1, "rgba(255,120,40,0)");
+        ctx.fillStyle = flame;
+        ctx.beginPath();
+        ctx.moveTo(-3, 16);
+        ctx.lineTo(3, 16);
+        ctx.lineTo(0, 34 + Math.sin(t * 17) * 3);
+        ctx.fill();
+        ctx.restore();
     }
 
     function frame(now) {
         var t = reduce ? 0 : now / 1000;
-        var hour = zurichHour();
-        var pal = palette(hour);
-        var g = ctx.createLinearGradient(0, 0, 0, h * 0.62);
-        g.addColorStop(0, hex(pal.sky[0], pal.sky[1], pal.sky[2]));
-        g.addColorStop(1, hex(pal.horizon[0], pal.horizon[1], pal.horizon[2]));
-        ctx.fillStyle = g;
-        ctx.fillRect(0, 0, w, h);
-
-        if (pal.night) {
-            ctx.fillStyle = "rgba(255,255,255,0.8)";
-            for (var i = 0; i < 40; i++) {
-                var sx = (i * 97) % w;
-                var sy = (i * 53) % (h * 0.42);
-                var tw = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(t * 1.5 + i));
-                ctx.globalAlpha = tw;
-                ctx.fillRect(sx, sy, 1.4, 1.4);
-            }
-            ctx.globalAlpha = 1;
+        var plate = plateFor(hourNow());
+        var img = ready[plate.name];
+        ctx.clearRect(0, 0, w, h);
+        if (!img) {
+            ctx.fillStyle = "#102033";
+            ctx.fillRect(0, 0, w, h);
+            if (!reduce) requestAnimationFrame(frame);
+            return;
         }
-
-        var sunX = w * (0.12 + (hour / 24) * 0.76);
-        var sunY = h * (0.42 - Math.sin((hour / 24) * Math.PI) * 0.28);
-        var glow = ctx.createRadialGradient(sunX, sunY, 4, sunX, sunY, 70);
-        glow.addColorStop(0, pal.night ? "rgba(232,236,245,0.95)" : "rgba(255,244,220,0.95)");
-        glow.addColorStop(1, "rgba(255,244,220,0)");
-        ctx.fillStyle = glow;
-        ctx.beginPath();
-        ctx.arc(sunX, sunY, 70, 0, Math.PI * 2);
-        ctx.fill();
-
-        var land = hex(pal.land[0], pal.land[1], pal.land[2]);
-        mountain(land, [[0, 0.50], [0.16, 0.36], [0.28, 0.46], [0.42, 0.30], [0.58, 0.44], [0.74, 0.32], [0.88, 0.42], [1, 0.36]], 0.58);
-        ctx.globalAlpha = 0.72;
-        mountain(land, [[0, 0.56], [0.2, 0.46], [0.38, 0.54], [0.55, 0.42], [0.72, 0.52], [0.9, 0.44], [1, 0.52]], 0.62);
-        ctx.globalAlpha = 1;
-
-        var shipX = w * 0.72;
-        var shipY = h * 0.16 + Math.sin(t * 0.35) * 6;
-        ctx.fillStyle = "#e7ebef";
-        ctx.beginPath();
-        ctx.moveTo(shipX, shipY - 26);
-        ctx.lineTo(shipX + 7, shipY + 10);
-        ctx.lineTo(shipX - 7, shipY + 10);
-        ctx.closePath();
-        ctx.fill();
-        ctx.fillRect(shipX - 10, shipY + 6, 20, 4);
-        var flame = ctx.createLinearGradient(shipX, shipY + 12, shipX, shipY + 28);
-        flame.addColorStop(0, "rgba(255,176,92," + (0.45 + 0.35 * Math.sin(t * 14)) + ")");
-        flame.addColorStop(1, "rgba(255,120,40,0)");
-        ctx.fillStyle = flame;
-        ctx.beginPath();
-        ctx.moveTo(shipX - 3, shipY + 12);
-        ctx.lineTo(shipX + 3, shipY + 12);
-        ctx.lineTo(shipX, shipY + 30);
-        ctx.fill();
-
-        ctx.strokeStyle = "rgba(40,40,40,0.75)";
-        ctx.lineWidth = 1.6;
+        var buffer = cover(img);
+        ctx.drawImage(buffer, 0, 0);
+        if (!reduce) {
+            plate.water.forEach(function (zone) {
+                var x0 = Math.round(zone.x * w);
+                var y0 = Math.round(zone.y * h);
+                var rw = Math.round(zone.w * w);
+                var rh = Math.round(zone.h * h);
+                for (var y = 0; y < rh; y += 2) {
+                    var shift = Math.sin(y * 0.09 + t * 1.15 + zone.x * 4) * 2.4;
+                    ctx.drawImage(buffer, x0, y0 + y, rw, 2, x0 + shift, y0 + y, rw, 2);
+                }
+            });
+        }
+        var night = plate.name === "night";
+        ctx.strokeStyle = night ? "rgba(226,232,240,0.75)" : "rgba(28,34,40,0.72)";
+        ctx.lineWidth = 1.5;
         ctx.lineCap = "round";
         birds.forEach(function (b) {
-            var x = ((t * b.s * w + b.p * 200) % (w + 80)) - 40;
-            var y = h * b.y + Math.sin(t * 0.8 + b.p) * b.a;
-            var flap = 0.4 + 0.6 * Math.abs(Math.sin(t * 3 + b.p));
-            bird(x, y, flap);
+            var x = ((t * b.s * w + b.p * 240) % (w + 100)) - 50;
+            var y = h * b.y + Math.sin(t * 0.7 + b.p) * 10;
+            var flap = 0.35 + 0.65 * Math.abs(Math.sin(t * 2.4 + b.p));
+            bird(x, y, flap, b.scale);
         });
-
-        var waterTop = h * 0.58;
-        var wg = ctx.createLinearGradient(0, waterTop, 0, h);
-        wg.addColorStop(0, hex(pal.water[0], pal.water[1], pal.water[2]));
-        wg.addColorStop(1, hex(pal.water[0] * 0.55, pal.water[1] * 0.6, pal.water[2] * 0.7));
-        ctx.fillStyle = wg;
-        ctx.fillRect(0, waterTop, w, h - waterTop);
-        ctx.strokeStyle = "rgba(255,255,255,0.18)";
-        ctx.lineWidth = 1.2;
-        for (var k = 0; k < 5; k++) {
-            ctx.beginPath();
-            for (var x = 0; x <= w; x += 8) {
-                var y = waterTop + 18 + k * 16 + Math.sin(x * 0.02 + t * 0.8 + k) * 3;
-                if (x === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-            }
-            ctx.stroke();
-        }
-
-        person(w * 0.78, h * 0.62, t);
+        starship(w * 0.62, h * 0.11 + Math.sin(t * 0.4) * 5, t, night);
         if (!reduce) requestAnimationFrame(frame);
     }
 

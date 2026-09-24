@@ -54,7 +54,7 @@ body {
     height: 100%;
 }
 .wash {
-    background: linear-gradient(to top, rgba(7,7,9,0.78) 0%, rgba(7,7,9,0.18) 34%, transparent 58%);
+    background: linear-gradient(to top, rgba(7,7,9,0.72) 0%, rgba(7,7,9,0.08) 28%, transparent 46%);
     animation: none;
 }
 
