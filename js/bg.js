@@ -10,9 +10,9 @@
     parts.forEach(function (part) {
         if (part.type === "hour") hour = Number(part.value);
     });
-    var file = "images/night.jpg";
-    if (hour >= 5 && hour < 10) file = "images/morning.jpg";
-    else if (hour >= 10 && hour < 17) file = "images/day.jpg";
-    else if (hour >= 17 && hour < 21) file = "images/evening.jpg";
+    var file = "images/night.jpg?v=2";
+    if (hour >= 5 && hour < 10) file = "images/morning.jpg?v=2";
+    else if (hour >= 10 && hour < 17) file = "images/day.jpg?v=2";
+    else if (hour >= 17 && hour < 21) file = "images/evening.jpg?v=2";
     plate.src = file;
 })();
