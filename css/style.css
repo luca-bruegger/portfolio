@@ -47,7 +47,21 @@ body {
     mix-blend-mode: overlay;
 }
 
-#net { position: absolute; inset: 0; width: 100%; height: 100%; }
+.bgvid {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.85) contrast(1.05);
+}
+.wash {
+    background:
+        linear-gradient(to top, rgba(7,7,9,0.82) 0%, rgba(7,7,9,0.28) 42%, rgba(7,7,9,0.45) 100%),
+        radial-gradient(40% 50% at 15% 80%, rgba(196, 122, 74, 0.22), transparent 70%);
+    animation: none;
+}
+
 
 .top {
     position: relative;
