@@ -56,22 +56,12 @@ body {
         max(var(--pad), env(safe-area-inset-left));
 }
 .place {
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
     margin: 0;
     color: var(--text);
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-}
-.phase {
-    letter-spacing: 0.08em;
-    color: #111;
-    background: #f4f1ea;
-    border-radius: 999px;
-    padding: 0.28rem 0.55rem;
 }
 .top nav {
     display: flex;
