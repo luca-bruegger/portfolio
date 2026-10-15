@@ -1,39 +1,26 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#0a0a0a">
-    <title>Imprint | Luca Brügger</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            min-height: 100dvh;
-            font-family: Inter, system-ui, sans-serif;
-            background: #0a0a0a;
-            color: #f5f5f5;
-            padding: 2rem 1.5rem;
-            line-height: 1.6;
-        }
-        .wrap { max-width: 36rem; margin: 0 auto; }
-        h1 { font-size: 1.8rem; margin: 0 0 1.5rem; font-weight: 600; }
-        h2 { font-size: 1rem; margin: 1.5rem 0 0.4rem; }
-        p { color: #a0a0a0; margin: 0.3rem 0; }
-        a { color: #f5f5f5; }
-        .back { display: inline-block; margin-top: 2rem; text-decoration: none; border-bottom: 1px solid #333; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impressum — Luca Brügger</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .imprint { max-width: 640px; margin: 8rem auto 4rem; padding: 0 1.5rem; }
+    .imprint h1 { font-size: 2.5rem; margin-bottom: 2rem; }
+    .imprint p { margin-bottom: 1rem; color: var(--text-muted); }
+    .back { display: inline-block; margin-top: 2rem; color: var(--accent); }
+  </style>
 </head>
 <body>
-    <div class="wrap">
-        <h1>Imprint</h1>
-        <h2>Owner</h2>
-        <p>Luca Brügger<br>Berner Oberland, Switzerland</p>
-        <h2>Analytics</h2>
-        <p>Google Analytics is used. More info: <a href="https://analytics.google.com" target="_blank" rel="noopener">analytics.google.com</a>.</p>
-        <a class="back" href="index.html">← Back</a>
-    </div>
+  <div class="imprint">
+    <h1>Impressum</h1>
+    <p><strong>Luca Brügger</strong></p>
+    <p>Berner Oberland, Schweiz</p>
+    <p>Website: lucabruegger.ch</p>
+    <p>Kontakt über GitHub: <a href="https://github.com/luca-bruegger" style="color:var(--accent)">luca-bruegger</a></p>
+    <p style="margin-top:2rem;font-size:0.875rem;">Diese Website dient rein persönlichen und informativen Zwecken.</p>
+    <a href="index.html" class="back">← Zurück</a>
+  </div>
 </body>
 </html>

@@ -1,150 +1,112 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#0a0a0a">
-    <meta name="author" content="Luca Brügger">
-    <meta name="description" content="Luca Brügger – Software Developer aus dem Berner Oberland.">
-    <title>Luca Brügger</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0a0a0a;
-            --text: #f5f5f5;
-            --muted: #a0a0a0;
-            --accent: #ffffff;
-        }
-        [data-time="morning"] { --bg: #0d1520; --accent: #7ec8e3; }
-        [data-time="day"] { --bg: #0a1218; --accent: #6ab0e0; }
-        [data-time="evening"] { --bg: #1a100c; --accent: #e8a070; }
-        [data-time="night"] { --bg: #050508; --accent: #c0c0d0; }
-
-        * { box-sizing: border-box; }
-        body {
-            margin: 0;
-            min-height: 100dvh;
-            font-family: Inter, system-ui, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 1.5rem;
-            transition: background 0.5s ease, color 0.5s ease;
-        }
-        header, footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--muted);
-        }
-        a { color: var(--text); text-decoration: none; transition: color 0.3s; }
-        a:hover { color: var(--accent); }
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            max-width: 640px;
-            margin: 0 auto;
-            width: 100%;
-            gap: 1rem;
-            padding: 2rem 0;
-        }
-        .portrait {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(255,255,255,0.12);
-            margin-bottom: 0.5rem;
-        }
-        .role {
-            margin: 0;
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--muted);
-        }
-        h1 {
-            margin: 0;
-            font-family: Syne, system-ui, sans-serif;
-            font-weight: 800;
-            font-size: clamp(2.6rem, 9vw, 4.8rem);
-            line-height: 0.9;
-            letter-spacing: -0.04em;
-        }
-        .greeting {
-            margin: 0.2rem 0 0;
-            font-size: 1.15rem;
-            font-weight: 500;
-            color: var(--accent);
-        }
-        .lede {
-            margin: 0;
-            font-size: 1.05rem;
-            max-width: 26rem;
-            opacity: 0.9;
-        }
-        footer { gap: 1.2rem; }
-        @media (min-width: 640px) {
-            body { padding: 2rem; }
-            main { gap: 1.2rem; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luca Brügger — Software Developer</title>
+  <meta name="description" content="Luca Brügger — Application Developer aus dem Berner Oberland. Guten Code. Raketen. Kaffee.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="profile.jpg" type="image/jpeg">
 </head>
 <body>
-    <header>
-        <span>Berner Oberland</span>
-        <a href="https://github.com/luca-bruegger" target="_blank" rel="noopener noreferrer">GitHub</a>
-    </header>
+  <div class="noise"></div>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#" class="logo">LB</a>
+      <div class="nav-links">
+        <a href="#about">Über</a>
+        <a href="#work">Arbeit</a>
+        <a href="#contact">Kontakt</a>
+      </div>
+    </div>
+  </nav>
 
-    <main>
-        <img class="portrait" src="images/profile.jpg" alt="Luca Brügger">
-        <p class="role">Software Developer</p>
-        <h1>Luca Brügger</h1>
-        <p class="greeting" id="greeting">Hallo</p>
-        <p class="lede" id="lede">Guten Code. Raketen. Kaffee.</p>
-    </main>
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <p class="eyebrow">BERNER OBERLAND · SOFTWARE DEVELOPER</p>
+        <h1>Luca<br>Brügger</h1>
+        <p class="tagline">Guten Code. Raketen. Kaffee.</p>
+        <div class="hero-cta">
+          <a href="#about" class="btn primary">Mehr erfahren</a>
+          <a href="https://github.com/luca-bruegger" target="_blank" rel="noopener" class="btn ghost">GitHub</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="image-wrapper">
+          <img src="profile.jpg" alt="Luca Brügger" class="profile">
+          <div class="glow"></div>
+        </div>
+      </div>
+    </section>
 
-    <footer>
-        <span id="copyright">© 2018–2026 Luca Brügger</span>
-        <a href="imprint.html">Imprint</a>
-        <a href="https://www.b-projects.ch" target="_blank" rel="noopener noreferrer">b-projects</a>
-    </footer>
+    <section id="about" class="section">
+      <div class="container">
+        <h2>Über mich</h2>
+        <div class="about-grid">
+          <div class="about-text">
+            <p>Hallo, ich bin Luca. Application Developer mit Sitz im Berner Oberland.</p>
+            <p>Ich baue hochwertige, durchdachte Mobile- und Web-Anwendungen. Guter Code ist für mich nicht optional — genau wie Kaffee.</p>
+            <p>Aktuell beschäftige ich mich mit SwiftUI, Cross-Platform (Kotlin Multiplatform, Flutter, Ionic), TypeScript/React und tiefer mit Machine Learning.</p>
+          </div>
+          <div class="stack">
+            <h3>Stack</h3>
+            <ul>
+              <li>SwiftUI</li>
+              <li>Kotlin Multiplatform</li>
+              <li>Flutter · Ionic</li>
+              <li>TypeScript · React · Next.js</li>
+              <li>Tailwind CSS</li>
+              <li>TensorFlow · PyTorch</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <script>
-        (function () {
-            var parts = new Intl.DateTimeFormat("en-GB", {
-                timeZone: "Europe/Zurich",
-                hour: "numeric",
-                hourCycle: "h23"
-            }).formatToParts(new Date());
-            var hour = 0;
-            parts.forEach(function (p) { if (p.type === "hour") hour = Number(p.value); });
+    <section id="work" class="section dark">
+      <div class="container">
+        <h2>Ausgewählte Arbeit</h2>
+        <div class="projects">
+          <article class="project">
+            <h3>Gradebooklet</h3>
+            <p>Moderne Notenverwaltung für Schüler & Lehrkräfte.</p>
+            <a href="https://gradebooklet-app.com" target="_blank" rel="noopener">Website →</a>
+          </article>
+          <article class="project">
+            <h3>Frienradar</h3>
+            <p>Social & location-based Mobile App.</p>
+            <a href="https://frienradar.com" target="_blank" rel="noopener">Website →</a>
+          </article>
+          <article class="project">
+            <h3>music.io</h3>
+            <p>Swift-Projekt.</p>
+            <a href="https://github.com/luca-bruegger/music.io" target="_blank" rel="noopener">GitHub →</a>
+          </article>
+        </div>
+      </div>
+    </section>
 
-            var time = "night", g = "Gute Nacht", l = "Guten Code. Raketen. Kaffee.";
-            if (hour >= 5 && hour < 10) { time = "morning"; g = "Guten Morgen"; }
-            else if (hour >= 10 && hour < 17) { time = "day"; g = "Guten Tag"; }
-            else if (hour >= 17 && hour < 21) { time = "evening"; g = "Guten Abend"; }
+    <section id="contact" class="section">
+      <div class="container">
+        <h2>Kontakt</h2>
+        <p class="contact-lead">Schreib mir über GitHub oder schau dir die Projekte an.</p>
+        <div class="links">
+          <a href="https://github.com/luca-bruegger" target="_blank" rel="noopener" class="link-card">GitHub</a>
+          <a href="https://www.b-projects.ch/" target="_blank" rel="noopener" class="link-card">b-projects</a>
+          <a href="imprint.html" class="link-card">Impressum</a>
+        </div>
+      </div>
+    </section>
+  </main>
 
-            document.documentElement.setAttribute("data-time", time);
-            document.getElementById("greeting").textContent = g + ", ich bin Luca.";
-            document.getElementById("lede").textContent = l;
-            document.getElementById("copyright").textContent = "© " + (new Date().getFullYear() - 8) + "–" + new Date().getFullYear() + " Luca Brügger";
+  <footer>
+    <p>© 2018–2026 Luca Brügger</p>
+  </footer>
 
-            var colors = { morning: "#0d1520", day: "#0a1218", evening: "#1a100c", night: "#050508" };
-            var meta = document.querySelector('meta[name="theme-color"]');
-            if (meta) meta.content = colors[time] || "#0a0a0a";
-        })();
-    </script>
+  <script src="script.js"></script>
 </body>
 </html>
