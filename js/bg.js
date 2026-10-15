@@ -15,34 +15,38 @@
 
     var time = "night";
     var g = "Gute Nacht";
-    var l = "Ich mag guten Code, Raketen und Kaffee. Schlaf gut.";
+    var l = "Guten Code. Raketen. Kaffee. Ruhig schlafen.";
 
     if (hour >= 5 && hour < 10) {
         time = "morning";
         g = "Guten Morgen";
-        l = "Ich mag guten Code, Raketen und den ersten Kaffee des Tages.";
+        l = "Guten Code. Raketen. Erster Kaffee.";
     } else if (hour >= 10 && hour < 17) {
         time = "day";
         g = "Guten Tag";
-        l = "Ich mag guten Code, Raketen und Kaffee. Willkommen.";
+        l = "Guten Code. Raketen. Kaffee.";
     } else if (hour >= 17 && hour < 21) {
         time = "evening";
         g = "Guten Abend";
-        l = "Ich mag guten Code, Raketen und den Abend in den Bergen.";
+        l = "Guten Code. Raketen. Abend in den Bergen.";
     }
+
+    document.documentElement.setAttribute("data-time", time);
 
     if (plate) {
         var files = {
-            morning: "images/morning.jpg?v=4",
-            day: "images/day.jpg?v=4",
-            evening: "images/evening.jpg?v=4",
-            night: "images/night.jpg?v=4"
+            morning: "images/morning.jpg?v=5",
+            day: "images/day.jpg?v=5",
+            evening: "images/evening.jpg?v=5",
+            night: "images/night.jpg?v=5"
         };
-        plate.src = files[time] || "images/day.jpg?v=4";
+        plate.src = files[time] || "images/day.jpg?v=5";
     }
 
     if (greeting) greeting.textContent = g + ", ich bin Luca.";
     if (lede) lede.textContent = l;
 
-    document.documentElement.setAttribute("data-time", time);
+    var colors = { morning: "#0d1520", day: "#0a1218", evening: "#1a100c", night: "#050508" };
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.content = colors[time] || "#0a0a0a";
 })();
