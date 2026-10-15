@@ -1,1 +1,150 @@
-$(cat /workspace/artifacts/final-index.html)
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="author" content="Luca Brügger">
+    <meta name="description" content="Luca Brügger – Software Developer aus dem Berner Oberland.">
+    <title>Luca Brügger</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --text: #f5f5f5;
+            --muted: #a0a0a0;
+            --accent: #ffffff;
+        }
+        [data-time="morning"] { --bg: #0d1520; --accent: #7ec8e3; }
+        [data-time="day"] { --bg: #0a1218; --accent: #6ab0e0; }
+        [data-time="evening"] { --bg: #1a100c; --accent: #e8a070; }
+        [data-time="night"] { --bg: #050508; --accent: #c0c0d0; }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100dvh;
+            font-family: Inter, system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+        header, footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        a { color: var(--text); text-decoration: none; transition: color 0.3s; }
+        a:hover { color: var(--accent); }
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            max-width: 640px;
+            margin: 0 auto;
+            width: 100%;
+            gap: 1rem;
+            padding: 2rem 0;
+        }
+        .portrait {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.12);
+            margin-bottom: 0.5rem;
+        }
+        .role {
+            margin: 0;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        h1 {
+            margin: 0;
+            font-family: Syne, system-ui, sans-serif;
+            font-weight: 800;
+            font-size: clamp(2.6rem, 9vw, 4.8rem);
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+        }
+        .greeting {
+            margin: 0.2rem 0 0;
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: var(--accent);
+        }
+        .lede {
+            margin: 0;
+            font-size: 1.05rem;
+            max-width: 26rem;
+            opacity: 0.9;
+        }
+        footer { gap: 1.2rem; }
+        @media (min-width: 640px) {
+            body { padding: 2rem; }
+            main { gap: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <span>Berner Oberland</span>
+        <a href="https://github.com/luca-bruegger" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </header>
+
+    <main>
+        <img class="portrait" src="images/profile.jpg" alt="Luca Brügger">
+        <p class="role">Software Developer</p>
+        <h1>Luca Brügger</h1>
+        <p class="greeting" id="greeting">Hallo</p>
+        <p class="lede" id="lede">Guten Code. Raketen. Kaffee.</p>
+    </main>
+
+    <footer>
+        <span id="copyright">© 2018–2026 Luca Brügger</span>
+        <a href="imprint.html">Imprint</a>
+        <a href="https://www.b-projects.ch" target="_blank" rel="noopener noreferrer">b-projects</a>
+    </footer>
+
+    <script>
+        (function () {
+            var parts = new Intl.DateTimeFormat("en-GB", {
+                timeZone: "Europe/Zurich",
+                hour: "numeric",
+                hourCycle: "h23"
+            }).formatToParts(new Date());
+            var hour = 0;
+            parts.forEach(function (p) { if (p.type === "hour") hour = Number(p.value); });
+
+            var time = "night", g = "Gute Nacht", l = "Guten Code. Raketen. Kaffee.";
+            if (hour >= 5 && hour < 10) { time = "morning"; g = "Guten Morgen"; }
+            else if (hour >= 10 && hour < 17) { time = "day"; g = "Guten Tag"; }
+            else if (hour >= 17 && hour < 21) { time = "evening"; g = "Guten Abend"; }
+
+            document.documentElement.setAttribute("data-time", time);
+            document.getElementById("greeting").textContent = g + ", ich bin Luca.";
+            document.getElementById("lede").textContent = l;
+            document.getElementById("copyright").textContent = "© " + (new Date().getFullYear() - 8) + "–" + new Date().getFullYear() + " Luca Brügger";
+
+            var colors = { morning: "#0d1520", day: "#0a1218", evening: "#1a100c", night: "#050508" };
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.content = colors[time] || "#0a0a0a";
+        })();
+    </script>
+</body>
+</html>
